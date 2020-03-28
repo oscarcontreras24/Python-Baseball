@@ -15,7 +15,9 @@ for game_file in game_files:
     game_frames.append(game_frame)
 
 games = pd.concat(game_frames)
-
+#games = games[~games.index.duplicated()]
+#print(games.head(100))
+#print(games.shape)
 games.loc[games['multi5'] == '??', ['multi5']] = ''
 
 identifiers = games['multi2'].str.extract(r'(.LS(\d{4})\d{5})')
@@ -30,3 +32,4 @@ games = pd.concat([games, identifiers], sort=False, axis=1)
 games = games.fillna(' ')
 #print(pd.unique(games['type'].values.ravel()))
 games.loc[:, 'type'] = pd.Categorical(games.loc[:, 'type'])
+print(games.head())
