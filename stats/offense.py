@@ -21,4 +21,23 @@ replacements = {r'^S(.*)': 'single',
 hit_type = hits['event'].replace(replacements, regex = True)
 
 hits = hits.assign(hit_type=hit_type)
-#print(hit_type.head())
+#print(hits.head())
+
+#finding the count of hits in a givin inning
+hits = hits.groupby(['inning', 'hit_type']).size()
+
+#giving a title to the new count of hits in an inning
+hits = hits.reset_index(name = 'count')
+
+hits.loc[:, 'hit_type'] = pd.Categorical(hits.loc[:, 'hit_type'], ['single', 'double', 'triple', 'hr'])
+#print(hits.head())
+
+# organizes from lowest inning to highest inning and hit type from single to HR
+hits = hits.sort_values(['inning', 'hit_type'])
+
+
+hits = hits.pivot(index = 'inning', columns = 'hit_type', values = 'count')
+#print(hits.head())
+
+hits.plot.bar(stacked =True)
+plt.show()
