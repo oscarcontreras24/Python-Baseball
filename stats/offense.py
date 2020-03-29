@@ -19,4 +19,6 @@ replacements = {r'^S(.*)': 'single',
 
 #renaming the values for the event column
 hit_type = hits['event'].replace(replacements, regex = True)
-print(hit_type.head())
+
+hits = hits.assign(hit_type=hit_type)
+#print(hit_type.head())
