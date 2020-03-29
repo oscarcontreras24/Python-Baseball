@@ -10,7 +10,7 @@ hits = plays.loc[plays['event'].str.contains('^(?:S(?!B)|D|T|HR)'), ['inning', '
 #print(hits.head())
 
 #converting in the inning elements from strings to numbers
-hits[:, 'inning'] = pd.to_numeric(hits.loc[:, 'inning'])
+hits.loc[:, 'inning'] = pd.to_numeric(hits.loc[:, 'inning'])
 
 replacements = {r'^S(.*)': 'single',
                 r'^D(.*)': 'double',
