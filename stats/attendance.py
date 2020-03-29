@@ -6,7 +6,8 @@ from data import games
 attendance = games.loc[(games['type'] == 'info') & (games['multi2'] == 'attendance'), ['year', 'multi3']]
 #print(attendance.head())
 
-attendance.rename(columns = {'year': 'year', 'multi3': 'attendance'}, inplace = True)
+#attendance.rename(columns = {'year': 'year', 'multi3': 'attendance'}, inplace = True)
+attendance.columns = ['year', 'attendance']
 #print(attendance.head())
 
 attendance.loc[:, "attendance"] = pd.to_numeric(attendance.loc[:, "attendance"])
