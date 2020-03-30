@@ -29,7 +29,26 @@ events.columns = ['year', 'game_id', 'team', 'BB', 'E', 'H', 'HBP', 'HR', 'ROE',
 
 #ensures the index name is not evemnt_types and on the sme axis as the other column headers
 events = events.rename_axis('None', axis = 'columns')
-print(events.head())
+#print(events.head())
 
 #performing an outer merge wuth pa and events
 events_plus_pa = pd.merge(events, pa, how = 'outer', left_on = ['year', 'game_id', 'team'], right_on = ['year', 'game_id', 'team'])
+#print(events_plus_pa.head())
+
+#merging info and event plus data frame to attachleague info
+defense = pd.merge(events_plus_pa, info)
+
+#assigning the DER to the DER column
+defense.loc[:, 'DER'] = 1 - ((defense['H'] + defense['ROE']) / (defense['PA'] - defense['BB'] - defense['SO'] - defense['HBP'] - defense['HR']))
+
+#need in order to plot
+defense['year'] = pd.to_numeric(defense.loc[:, 'year'])
+#print(defense.head())
+
+#new data frame with columns of interest
+der = defense.loc[defense['year'] >= 1978, ['year', 'defense', 'DER']]
+#arranges data in a plottable format
+der = der.pivot(index = 'year', columns = 'defense', values = 'DER')
+
+der.plot(x_compat = True, xticks = range(1978, 2018, 4), rot = 45)
+plt.show()
