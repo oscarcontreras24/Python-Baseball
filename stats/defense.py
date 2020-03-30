@@ -26,5 +26,10 @@ events.columns = events.columns.droplevel()
 #print(events.head())
 
 events.columns = ['year', 'game_id', 'team', 'BB', 'E', 'H', 'HBP', 'HR', 'ROE', 'SO']
-events = events.rename_axis('None')
+
+#ensures the index name is not evemnt_types and on the sme axis as the other column headers
+events = events.rename_axis('None', axis = 'columns')
 print(events.head())
+
+#performing an outer merge wuth pa and events
+events_plus_pa = pd.merge(events, pa, how = 'outer', left_on = ['year', 'game_id', 'team'], right_on = ['year', 'game_id', 'team'])
